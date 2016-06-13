@@ -1,0 +1,42 @@
+@import "compass";
+
+html, body {
+	height: 100%;
+	margin:0;
+	padding:0;
+	font-family: helvetica, arial;
+	font-size: 10px;
+	font-weight: 200;
+	color: #fff;
+	background-color: #222;
+}
+
+#canvas {
+	@include border-radius(50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+#chart{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	display: none;
+	width: 240px;
+	height: 240px;
+}
+
+#report{
+	position: absolute;
+	top:2px;
+	left: 2px;
+	font-size: 12px;
+	font-weight: bold;
+	div{
+		div{
+			float: left;
+			width: 40px;
+		}
+	}
+}
