@@ -312,6 +312,7 @@ function report(frame){
     if(creatureCount - grandTotal==0 && !roundReport){
         var winner = totals.indexOf(Math.max.apply(window,totals));
         nextRound(winner);
+        frame = 0;
     }
     if(!frame){
         $("#report").html('');
@@ -358,7 +359,6 @@ function nextRound(winner){
             creatures[i].dna = DNAdefault;
         }
     }
-    frame = 0;
     roundReport = 0; 
 }
 
