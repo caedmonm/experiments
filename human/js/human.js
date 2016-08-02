@@ -1,6 +1,7 @@
 var human = {
 	isHuman: {
 		trueFalse: false,
+		likelyhood: 0,
 		why: "initial_state"
 	},
 	movement: 0,
@@ -30,15 +31,20 @@ var human = {
 		if(this.timeOnSite<500){
 			this.isHuman.trueFalse = false;
 			this.isHuman.why = "too quick";
+			this.isHuman.likelyhood = 0;
 			return this.isHuman;
 		}
 
 		if(!this.movement){
 			this.isHuman.trueFalse = false;
 			this.isHuman.why = "no movement";
+			this.isHuman.likelyhood = 0;
 			return this.isHuman;
 		}
 
+		if(!this.clicks){
+			this.isHuman.likelyhood = 20;
+		}
 
 
 	}
