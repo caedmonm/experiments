@@ -1,32 +1,18 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
+const fs = require('fs');
+const child_process = require('child_process');
+ 
+for(var i=0; i<300; i++) {
+   var workerProcess = child_process.spawn('node', ['support.js', i]);
 
-// Create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+   workerProcess.stdout.on('data', function (data) {
+      console.log('stdout: ' + data);
+   });
 
-app.use(express.static('public'));
+   workerProcess.stderr.on('data', function (data) {
+      console.log('stderr: ' + data);
+   });
 
-app.get('/index.html', function (req, res) {
-   res.sendFile( __dirname + "/" + "index.html" );
-})
-
-app.post('/process_post', urlencodedParser, function (req, res) {
-
-   // Prepare output in JSON format
-   response = {
-       first_name:req.body.first_name,
-       last_name:req.body.last_name
-   };
-   console.log(response);
-   res.end(JSON.stringify(response));
-})
-
-var server = app.listen(8081, function () {
-
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log("Example app listening at http://%s:%s", host, port)
-
-})
+   workerProcess.on('close', function (code) {
+      console.log('child process exited with code ' + code);
+   });
+}

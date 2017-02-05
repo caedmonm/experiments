@@ -1,0 +1,43 @@
+npm init
+npm install -S webpack // install and add to dependencies (-S)
+npm install -g webpack // global install
+
+add webpack.config.js to root:
+
+var debug = process.env.NODE_ENV !== "production";
+var webpack = require('webpack');
+
+//////////
+
+module.exports = {
+  context: __dirname,
+  devtool: debug ? "inline-sourcemap" : null,
+  entry: "./js/scripts.js",
+  output: {
+    path: __dirname + "/js",
+    filename: "scripts.min.js"
+  },
+  plugins: debug ? [] : [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
+  ],
+};
+
+//////////
+
+webpack 					- this will compile files
+NODE_ENV=production webpack - this will do the same but production not test env
+webpack --watch 			- watch... obvs
+
+npm install -S webpack-dev-server
+npm install -g webpack-dev-server
+
+webpack-dev-server --content-base src --inline --hot  : run from root dir of proj where source code is in ./src --inline -hot enable live reloads
+
+Site now here: http://127.0.0.1:8080/
+
+
+OR! Include in package.json script section and then just:
+
+npm run dev     :)
