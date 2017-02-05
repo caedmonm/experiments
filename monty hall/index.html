@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		body{
+			font-family: monospace;
+			color: green;
+			background-color: black;
+		}
+		.o{
+			float:left;
+			width: 300px;
+		}
+		table{
+			width: 300px;
+		}
+		td,th{
+			width: 25%;
+			text-align: left;
+		}
+		th{
+			font-weight: bold;
+			color: white;
+		}
+		tr.right td{
+			color: green;
+		}
+		tr.wrong td{
+			color: red;
+		}
+		.clr{
+			clear: both;
+			height: 1px;
+		}
+		h2{
+			font-size: 16px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		Rounds: <input id="rounds" type="number" value="500" /> <button class="go">go</button>
+	</div>
+	<div class="o"><h2>Not Switching</h2></div>
+	<div class="o"><h2>Switching</h2></div>
+	<div class="clr"></div>
+	<div class="ns o"></div>
+	<div class="s o"></div>
+	<div class="clr"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="montyhall.js"></script>
+</body>
+</html>
