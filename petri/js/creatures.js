@@ -2,7 +2,7 @@ window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequ
 
 var
     canvas = document.getElementById("canvas"),
-    ctx = canvas.getContext("2d"),
+    ctx = canvas[0].getContext("2d"),
     cw = 500,
     ch = 500,
     chartCanvas = $("#chart"),
@@ -27,7 +27,9 @@ var
     DNAs = [
         {col:"#f00", id: 0, assimDist: 40, vMax: 1, targForce: .1, wins: 0},    // red
         {col:"#00f", id: 1, assimDist: 40, vMax: 1, targForce: .1, wins: 0},    // blue
-        {col:"#0f0", id: 2, assimDist: 40, vMax: 1, targForce: .1, wins: 0}     // green
+        {col:"#0f0", id: 2, assimDist: 40, vMax: 1, targForce: .1, wins: 0},    // green
+        {col:"#0ff", id: 3, assimDist: 40, vMax: 1, targForce: .1, wins: 0},    // light blue
+        {col:"#f90", id: 4, assimDist: 40, vMax: 1, targForce: .1, wins: 0},    // orange
     ],
     DNAmods = {},
     winners = [],
