@@ -59,15 +59,15 @@ function node(i,j){
 	}
 
 	this.show = function(col){
-		if(col){
-			fill(col);
-		
 			if(this.wall){
+				noStroke();
 				fill(0);
+				if(useImg){
+					rect(this.i*w, this.j*h, w-1, h-1);
+				} else {
+					ellipse(this.i*w + w/2, this.j*h + h/2, w/2, h/2);
+				}
 			}
-			noStroke();
-			rect(this.i*w, this.j*h, w, h);
-		}
 	}
 	this.addNeighbors = function(grid){
 		var ti = this.i;
@@ -112,7 +112,6 @@ function preload() {
 
 function setup(){
 	createCanvas(500,500);
-  	background(0);
 
   	if(useImg){
 	  	image(img, 0, 0, 500, 500);
@@ -150,6 +149,7 @@ function setup(){
 }
 
 function draw(){
+	background("rgba(255,255,255,1)");
 	if(openSet.length){
 		// continue search
 		var winner = 0;
@@ -204,20 +204,16 @@ function draw(){
 
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {
-			// if(useImg){
-			// 	grid[i][j].show();
-			// } else {
-				grid[i][j].show(255);
-			// }
+			grid[i][j].show(255);
 		}
 	}
 
 	for (var i = 0; i < openSet.length; i++) {
-		openSet[i].show(color(0,255,0));
+		// openSet[i].show(color(0,255,0));
 	}
 
 	for (var i = 0; i < closedSet.length; i++) {
-		closedSet[i].show(color(255,0,0));
+		// closedSet[i].show(color(255,0,0));
 	}
 
 	
@@ -228,8 +224,14 @@ function draw(){
 		path.push(temp.previous);
 		temp = temp.previous;
 	}
+
+	noFill();
+	stroke(255,100,0);
+	strokeWeight(5);
+	beginShape();
 	for (var i = 0; i < path.length; i++) {
-		path[i].show(color(0,0,255));
+		vertex(path[i].i*w + w/2, path[i].j*h + h/2);
 	}
+	endShape();
 }
 
