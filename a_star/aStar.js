@@ -16,6 +16,8 @@ var useDiags = 0;
 var wallProb = .3;
 var useImg = 1;
 
+// var gpu = new GPU();
+
 function removeFromArray(arr,elm){
 	for (var i = arr.length - 1; i >= 0; i--) {
 		if(arr[i] == elm){
