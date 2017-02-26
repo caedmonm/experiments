@@ -15,7 +15,6 @@ var snowLevel = 170;
 function preload() {
 }
 
-
 function setup(){
 	createCanvas(w, h);
 	pixelDensity(1);
