@@ -1,7 +1,7 @@
 
 var canvas;
-var ypos = 0;
-var xpos = 0;
+var ypos = 10000;
+var xpos = 10000;
 var xoff,yoff;
 var posterise = 3;
 var gpu = new GPU();
@@ -35,9 +35,9 @@ function setup(){
 } 
 
 function createMap(){
-	yoff = ypos;
+	yoff = ypos - (250*inc);
 	for (var y = 0; y < height; y++) {
-		xoff = xpos;
+		xoff = xpos - (500*inc);
 		for (var x = 0; x < width; x++) {
 			var index = (x + y * width) * 4;
 			var r = noise(xoff,yoff) * 255;
