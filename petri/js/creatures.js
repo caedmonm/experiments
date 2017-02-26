@@ -2,7 +2,7 @@ window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequ
 
 var
     canvas = document.getElementById("canvas"),
-    ctx = canvas[0].getContext("2d"),
+    ctx = canvas.getContext("2d"),
     cw = 500,
     ch = 500,
     chartCanvas = $("#chart"),
