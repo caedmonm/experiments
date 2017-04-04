@@ -12,9 +12,9 @@ var w,h;
 var path = [];
 var img;
 
-var useDiags = 0;
-var wallProb = .3;
-var useImg = 1;
+var useDiags = true;
+var wallProb = .2;
+var useImg = false;
 
 // var gpu = new GPU();
 
@@ -113,6 +113,7 @@ function preload() {
 }
 
 function setup(){
+	// frameRate(10);
 	createCanvas(500,500);
 
   	if(useImg){
@@ -182,9 +183,11 @@ function draw(){
 
 				if(openSet.includes(neighbor[1])){
 					if(tempG < neighbor[1].g){
+						// find new route
 						newPath = true;
 					}
 				} else {
+					// continue on current route
 					newPath = true;
 					openSet.push(neighbor[1]);
 				}
@@ -226,6 +229,9 @@ function draw(){
 		path.push(temp.previous);
 		temp = temp.previous;
 	}
+
+	// fill(255,66,66);
+	// ellipse(path[0].i*w, path[0].j*h, 10, 10);
 
 	noFill();
 	stroke(255,100,0);
