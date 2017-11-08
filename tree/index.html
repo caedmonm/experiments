@@ -13,16 +13,32 @@
    <script type="text/javascript">
 
    function setup() {
-      createCanvas(600, 600);
-      noLoop();
+      createCanvas(1000, 600);
+      // noLoop();
+   }
+
+   function leaf(x,y,w,h){
+     var scale = Math.random()+.5;
+     if(scale>1){
+       scale = 1;
+     }
+     fill("#000000");
+     ellipse(x, y, w*scale, h*scale);
    }
 
    function draw() {
       function drawBranches(startX, startY, trunkWidth, level) {
-
-        if(level < 10) {
-          var changeX = 100 / (level + 1);
-          var changeY = 200 / (level + 1);
+        if(Math.random()>.7){
+          level += Math.round(Math.random()*2);
+        }
+        if(level < 18) {
+          if(level>1){
+            var changeX = 300 / (level + 1);
+            var changeY = 250 / (level + 1);
+          } else {
+            var changeX = 50 / (level + 1);
+            var changeY = 150 / (level + 1);
+          }
 
           var topRightX = startX + Math.random() * changeX;
           var topRightY = startY - Math.random() * changeY;
@@ -36,19 +52,27 @@
           vertex(startX + trunkWidth / 4, startY);
           quadraticVertex(startX + trunkWidth / 4, startY - trunkWidth, topRightX, topRightY);
           endShape();
-          // draw left branch
-          beginShape();
-          strokeWeight(trunkWidth);
-          noFill();
-          vertex(startX - trunkWidth / 4, startY);
-          quadraticVertex(startX - trunkWidth / 4, startY - trunkWidth, topLeftX, topLeftY);
-          endShape();
+          if(level<2){
+            drawBranches(topRightX, topRightY, trunkWidth * 0.9, level+1);
+          } else {
+            drawBranches(topRightX, topRightY, trunkWidth * 0.6, level+1);
 
-          drawBranches(topRightX, topRightY, trunkWidth * 0.7, level+1);
-          drawBranches(topLeftX, topLeftY, trunkWidth * 0.7, level+1);
+            // draw left branch
+            beginShape();
+            strokeWeight(trunkWidth);
+            noFill();
+            vertex(startX - trunkWidth / 4, startY);
+            quadraticVertex(startX - trunkWidth / 4, startY - trunkWidth, topLeftX, topLeftY);
+            endShape();
+            drawBranches(topLeftX, topLeftY, trunkWidth * 0.7, level+1);
+          }
+        } else {
+          leaf(startX, startY, 2, 4);
         }
       }
-      drawBranches(canvas.width / 2, canvas.height, 50, 0);
+      if(frameCount==1){
+        drawBranches(500, 600, 15, 0);
+      }
    }
 
    </script>
