@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /
+
+RewriteRule   ^gpx/(.*)$	kml2gpx/api.php?req=$1  [QSA]

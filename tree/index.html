@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <title></title>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script>
+
+   </head>
+   <body>
+
+   </body>
+   <script type="text/javascript">
+
+   function setup() {
+      createCanvas(600, 600);
+      noLoop();
+   }
+
+   function draw() {
+      function drawBranches(startX, startY, trunkWidth, level) {
+
+        if(level < 10) {
+          var changeX = 100 / (level + 1);
+          var changeY = 200 / (level + 1);
+
+          var topRightX = startX + Math.random() * changeX;
+          var topRightY = startY - Math.random() * changeY;
+
+          var topLeftX = startX - Math.random() * changeX;
+          var topLeftY = startY - Math.random() * changeY;
+          // draw right branch
+          beginShape();
+          strokeWeight(trunkWidth);
+          noFill();
+          vertex(startX + trunkWidth / 4, startY);
+          quadraticVertex(startX + trunkWidth / 4, startY - trunkWidth, topRightX, topRightY);
+          endShape();
+          // draw left branch
+          beginShape();
+          strokeWeight(trunkWidth);
+          noFill();
+          vertex(startX - trunkWidth / 4, startY);
+          quadraticVertex(startX - trunkWidth / 4, startY - trunkWidth, topLeftX, topLeftY);
+          endShape();
+
+          drawBranches(topRightX, topRightY, trunkWidth * 0.7, level+1);
+          drawBranches(topLeftX, topLeftY, trunkWidth * 0.7, level+1);
+        }
+      }
+      drawBranches(canvas.width / 2, canvas.height, 50, 0);
+   }
+
+   </script>
+</html>
