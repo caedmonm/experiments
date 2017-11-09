@@ -8,12 +8,16 @@
 
    </head>
    <body>
-
+     <p align="center" style="position:absolute; top:0; left:0; width:100%; font-family: arial, sans-serif; color: #aaa">Click to add trees</p>
    </body>
    <script type="text/javascript">
+   var startTrunkWidth;
+   var cH = 600;
+   var cW = 1000;
+   var fillCol = "rgb(0,0,0)";
 
    function setup() {
-      createCanvas(1000, 600);
+      createCanvas(cW, cH);
       // noLoop();
    }
 
@@ -22,58 +26,64 @@
      if(scale>1){
        scale = 1;
      }
-     fill("#000000");
+     fill(fillCol);
      ellipse(x, y, w*scale, h*scale);
    }
 
-   function draw() {
-      function drawBranches(startX, startY, trunkWidth, level) {
-        if(Math.random()>.7){
-          level += Math.round(Math.random()*2);
-        }
-        if(level < 18) {
-          if(level>1){
-            var changeX = 300 / (level + 1);
-            var changeY = 250 / (level + 1);
-          } else {
-            var changeX = 50 / (level + 1);
-            var changeY = 150 / (level + 1);
-          }
+   function drawBranches(startX, startY, trunkWidth, level) {
+     if(Math.random()>.7){
+       level += Math.round(Math.random()*2);
+     }
+     if(level < 16) {
+       if(level>2){
+         var changeX = (startTrunkWidth*15) / (level + 1);
+         var changeY = (startTrunkWidth*10) / (level + 1);
+       } else {
+         var changeX = (startTrunkWidth*3) / 3;
+         var changeY = (startTrunkWidth*5)+10;
+       }
 
-          var topRightX = startX + Math.random() * changeX;
-          var topRightY = startY - Math.random() * changeY;
+       var topRightX = startX + Math.random() * changeX;
+       var topRightY = startY - Math.random() * changeY;
 
-          var topLeftX = startX - Math.random() * changeX;
-          var topLeftY = startY - Math.random() * changeY;
-          // draw right branch
-          beginShape();
-          strokeWeight(trunkWidth);
-          noFill();
-          vertex(startX + trunkWidth / 4, startY);
-          quadraticVertex(startX + trunkWidth / 4, startY - trunkWidth, topRightX, topRightY);
-          endShape();
-          if(level<2){
-            drawBranches(topRightX, topRightY, trunkWidth * 0.9, level+1);
-          } else {
-            drawBranches(topRightX, topRightY, trunkWidth * 0.6, level+1);
+       var topLeftX = startX - Math.random() * changeX;
+       var topLeftY = startY - Math.random() * changeY;
+       // draw right branch
+       beginShape();
+       stroke(fillCol);
+       strokeWeight(trunkWidth);
+       noFill();
+       vertex(startX + trunkWidth / 4, startY);
+       quadraticVertex(startX + trunkWidth / 4, startY - trunkWidth, topRightX, topRightY);
+       endShape();
+       if(level<2){
+         drawBranches(topRightX, topRightY, trunkWidth * 0.9, level+1);
+       } else {
+         drawBranches(topRightX, topRightY, trunkWidth * 0.6, level+1);
 
-            // draw left branch
-            beginShape();
-            strokeWeight(trunkWidth);
-            noFill();
-            vertex(startX - trunkWidth / 4, startY);
-            quadraticVertex(startX - trunkWidth / 4, startY - trunkWidth, topLeftX, topLeftY);
-            endShape();
-            drawBranches(topLeftX, topLeftY, trunkWidth * 0.7, level+1);
-          }
-        } else {
-          leaf(startX, startY, 2, 4);
-        }
-      }
-      if(frameCount==1){
-        drawBranches(500, 600, 15, 0);
-      }
+         // draw left branch
+         beginShape();
+         strokeWeight(trunkWidth);
+         noFill();
+         vertex(startX - trunkWidth / 4, startY);
+         quadraticVertex(startX - trunkWidth / 4, startY - trunkWidth, topLeftX, topLeftY);
+         endShape();
+         drawBranches(topLeftX, topLeftY, trunkWidth * 0.7, level+1);
+       }
+     } else {
+       leaf(startX, startY, 2, 4);
+     }
    }
 
+   function draw() {
+   }
+
+   function mousePressed() {
+     var r = mouseY / cH;
+     startTrunkWidth = 20 * r;
+    //  var c = 200-Math.round(r*200);
+    //  fillCol = "rgb("+c+","+c+","+c+")";
+     drawBranches(mouseX, mouseY, startTrunkWidth, 0);
+   }
    </script>
 </html>
