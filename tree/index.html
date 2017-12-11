@@ -4,6 +4,13 @@
       <meta charset="utf-8">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <title></title>
+      <style media="screen">
+         html,body{
+            padding:0;
+            margin:0;
+            overflow: hidden;
+         }
+      </style>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1" />
    </head>
@@ -12,8 +19,8 @@
    </body>
    <script type="text/javascript">
    var startTrunkWidth;
-   var cH = 600;
-   var cW = 1000;
+   var cW = $(document).width();
+   var cH = $(document).height();
    var fillCol = "rgb(0,0,0)";
 
    function setup() {
