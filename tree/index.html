@@ -52,10 +52,9 @@
 
        var topRightX = startX + Math.random() * changeX;
        var topRightY = startY - Math.random() * changeY;
-
        var topLeftX = startX - Math.random() * changeX;
        var topLeftY = startY - Math.random() * changeY;
-       // draw right branch
+
        beginShape();
        stroke(fillCol);
        strokeWeight(trunkWidth);
@@ -67,8 +66,6 @@
          drawBranches(topRightX, topRightY, trunkWidth * 0.9, level+1);
        } else {
          drawBranches(topRightX, topRightY, trunkWidth * 0.6, level+1);
-
-         // draw left branch
          beginShape();
          strokeWeight(trunkWidth);
          noFill();
