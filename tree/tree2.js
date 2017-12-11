@@ -3,7 +3,7 @@ var cW = $(document).width();
 var cH = $(document).height();
 var fillCol = "rgb(0,0,0)";
 var trees = [];
-var treeCount = 1;
+var treeCount = 6;
 var wind = 0;
 // tree setups
 var startWidth = 7;
