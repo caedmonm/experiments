@@ -3,9 +3,10 @@ var cW = $(document).width();
 var cH = $(document).height();
 var fillCol = "rgb(0,0,0)";
 var trees = [];
-var treeCount = 10;
-var wind = 0;
+var wind;
+
 // tree setups
+// var treeCount = 6;
 // var startWidth = 7;
 // var startLength = 60;
 // var decay_length = .8;
@@ -15,6 +16,7 @@ var wind = 0;
 // var singleBranchProb = .1; // 1 = all singles
 //
 //
+// var treeCount = 6;
 // var startWidth = 25;
 // var startLength = 60;
 // var decay_length = .85;
@@ -23,6 +25,8 @@ var wind = 0;
 // var min_width = .1;
 // var singleBranchProb = .2; // 1 = all singles
 
+var wind = 0;
+var treeCount = 3;
 var startWidth = 25;
 var startLength = 60;
 var decay_length = .85;
@@ -65,8 +69,12 @@ function addNode(i) {
         var new_x = round(n.x + (random(2) * random(-n.length, n.length)));
         var new_y = round(n.y - random(n.length));
         if(n.width == startWidth){
-          new_x = n.x;
-          new_y = n.y - n.length;
+          new_x = n.x + random(-n.length/10 , n.length/10);
+          new_y = n.y - (n.length * random(.8, 1));
+        }
+
+        if(wind){
+           new_x += random(0,wind);
         }
 
         t.nodes.push({
@@ -84,19 +92,31 @@ function addNode(i) {
   }
 }
 
+function leaf(x,y,w,h){
+  var scale = Math.random()+.5;
+  if(scale>1){
+    scale = 1;
+  }
+  fill(0,round(random(30,70)),0);
+  ellipse(x, y, w*scale, h*scale);
+}
+
 function drawTree(i) {
   var t = trees[i];
   for (var i = 0; i < t.nodes.length; i++) {
     var n = t.nodes[i];
     if (n.parent > -1) {
       strokeWeight(n.width);
-      // var x1 = n.x + (wind * (startWidth - n.width));
+      // stroke(46,26,10);
+      stroke(0);
       var x1 = n.x;
       var y1 = n.y;
-      // var x2 = t.nodes[n.parent].x + (wind * (startWidth - n.width));
       var x2 = t.nodes[n.parent].x;
       var y2 = t.nodes[n.parent].y;
       line(x1, y1, x2, y2);
+      if(n.length<=min_length || n.width == min_width){
+         leaf(x1,y1,2,4);
+      }
     }
   }
 }
@@ -109,8 +129,7 @@ function setup() {
 }
 
 function draw() {
-  wind = random(-.1, .1);
-  background(255);
+  background(60);
   var fps = frameRate();
   fill(0);
   text("FPS: " + fps.toFixed(2), 100, 100);
