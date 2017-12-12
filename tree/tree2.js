@@ -3,25 +3,33 @@ var cW = $(document).width();
 var cH = $(document).height();
 var fillCol = "rgb(0,0,0)";
 var trees = [];
-var treeCount = 6;
+var treeCount = 10;
 var wind = 0;
 // tree setups
-var startWidth = 7;
-var startLength = 60;
-var decay_length = .8;
-var decay_width = .8;
-var min_width = 1;
-var min_length = 5;
-var singleBranchProb = .1; // 1 = all singles
+// var startWidth = 7;
+// var startLength = 60;
+// var decay_length = .8;
+// var decay_width = .8;
+// var min_width = 1;
+// var min_length = 5;
+// var singleBranchProb = .1; // 1 = all singles
 //
 //
-// var startWidth = 1;
-// var startLength = 20;
-// var decay_length = .95;
-// var decay_width = .95;
-// var min_length = 1;
+// var startWidth = 25;
+// var startLength = 60;
+// var decay_length = .85;
+// var decay_width = .7;
+// var min_length = 5;
 // var min_width = .1;
-// var singleBranchProb = .7; // 1 = all singles
+// var singleBranchProb = .2; // 1 = all singles
+
+var startWidth = 25;
+var startLength = 60;
+var decay_length = .85;
+var decay_width = .7;
+var min_length = 5;
+var min_width = .1;
+var singleBranchProb = .2; // 1 = all singles
 
 function createTrees() {
   for (var i = 0; i < treeCount; i++) {
@@ -54,14 +62,20 @@ function addNode(i) {
         if (random(1) < singleBranchProb) {
           new_branches = 1;
         }
+        var new_x = round(n.x + (random(2) * random(-n.length, n.length)));
+        var new_y = round(n.y - random(n.length));
+        if(n.width == startWidth){
+          new_x = n.x;
+          new_y = n.y - n.length;
+        }
+
         t.nodes.push({
-          x: round(n.x + random(-n.length, n.length)),
-          y: round(n.y - random(n.length)),
+          x: new_x,
+          y: new_y,
           length: n.length * decay_length,
           width: new_width,
           parent: j,
           branches: new_branches,
-          // branches: 2,
           sprouted: 0
         })
         n.sprouted++;
