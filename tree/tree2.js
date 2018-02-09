@@ -26,7 +26,7 @@ var wind;
 // var singleBranchProb = .2; // 1 = all singles
 
 var wind = 0;
-var treeCount = 3;
+var treeCount = 1;
 var startWidth = 25;
 var startLength = 60;
 var decay_length = .85;
@@ -38,6 +38,7 @@ var singleBranchProb = .2; // 1 = all singles
 function createTrees() {
   for (var i = 0; i < treeCount; i++) {
     trees.push({
+      drawDepth: 0,
       nodes: [{
         x: round((cW / (treeCount + 1)) * (i + 1)),
         y: cH,
@@ -77,6 +78,11 @@ function addNode(i) {
            new_x += random(0,wind);
         }
 
+        var depth = 0;
+        if(t.nodes[j-1]){
+          depth = t.nodes[j-1].depth+1;
+        }
+
         t.nodes.push({
           x: new_x,
           y: new_y,
@@ -84,7 +90,8 @@ function addNode(i) {
           width: new_width,
           parent: j,
           branches: new_branches,
-          sprouted: 0
+          sprouted: 0,
+          depth: depth
         })
         n.sprouted++;
       }
@@ -101,11 +108,13 @@ function leaf(x,y,w,h){
   ellipse(x, y, w*scale, h*scale);
 }
 
-function drawTree(i) {
-  var t = trees[i];
+function drawTree(tree_num) {
+  var t = trees[tree_num];
+
   for (var i = 0; i < t.nodes.length; i++) {
     var n = t.nodes[i];
-    if (n.parent > -1) {
+    // console.log(n.depth,t.drawDepth);
+    if (n.parent > -1 && n.depth >= t.drawDepth) {
       strokeWeight(n.width);
       // stroke(46,26,10);
       stroke(0);
@@ -114,6 +123,9 @@ function drawTree(i) {
       var x2 = t.nodes[n.parent].x;
       var y2 = t.nodes[n.parent].y;
       line(x1, y1, x2, y2);
+
+      t.drawDepth = n.depth;
+
       if(n.length<=min_length || n.width == min_width){
          leaf(x1,y1,2,4);
       }
@@ -126,13 +138,14 @@ function setup() {
   createTrees();
   frameRate(30);
   createCanvas(cW, cH);
+  background(60);
 }
 
 function draw() {
-  background(60);
-  var fps = frameRate();
-  fill(0);
-  text("FPS: " + fps.toFixed(2), 100, 100);
+  // background(60);
+  // var fps = frameRate();
+  // fill(0);
+  // text("FPS: " + fps.toFixed(2), 100, 100);
   for (var i = 0; i < trees.length; i++) {
     addNode(i);
     drawTree(i);
