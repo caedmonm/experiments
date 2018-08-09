@@ -69,7 +69,7 @@ if(isset($_POST['pos'])){
                 if(val!=Number($("#pos").val())){
                     $("#pos").val(val);
                 }
-
+                $("#slider").slider("value", val);
                 currentPos = val;
 
                 $.post("./index.php",{pos:val},function(d){
