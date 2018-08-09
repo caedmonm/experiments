@@ -61,9 +61,9 @@ if(isset($_POST['pos'])){
                 set($(this).val());
             });
             $(document).on("click",".change",function(){
-                $("#pos").val(
-                    Number($("#pos").val()) + Number($(this).data("change"))
-                );
+                var v = Number($("#pos").val()) + Number($(this).data("change"));
+                $("#pos").val(v);
+                set(v);
             });
         </script>
     </body>
