@@ -53,8 +53,8 @@ if(isset($_POST['pos'])){
         <input id="pos" type="number" value="90" max="180" min="0" />
         <div id="slider"></div>
         <p>
-        <button data-change="-10" class="change">-</button>
-        <button data-change="10" class="change">+</button>
+        <button data-change="-2" class="change">-</button>
+        <button data-change="2" class="change">+</button>
         </p>
         <script>
             var currentPos = 90;
