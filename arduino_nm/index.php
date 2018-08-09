@@ -2,7 +2,8 @@
 if(isset($_POST['pos'])){
     $file = 'pos.txt';
     $handle = fopen($file, 'w') or die('Cannot open file:  '.$file);
-    $data = intval($_POST['pos']);
+    $position = intval($_POST['pos']);
+    $data = json_encode(["position"=>$position]);
     fwrite($handle, $data);
     echo $data;
     exit;

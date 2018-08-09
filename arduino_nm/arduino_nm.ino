@@ -10,14 +10,13 @@
 const String SSID = "Over here!"; 
 const String Password = "feefifofum";
 #define CONNECTION_LED_PIN 2
+DynamicJsonBuffer jsonBuffer;
 
 /* Servo stuff */
 #define SERVO_PIN 14
 #define CENTER_POSITION 90
 int currentServoPosition = 0;
 Servo myservo;
-int incomingByte = 0; 
-int targetServoPos = 90;
 
 void SetConnectionLEDOn()
 {
@@ -48,6 +47,44 @@ void MoveServoToPosition(int position, int speed){
   }
 
   currentServoPosition = position;
+}
+
+String getJsonHTTP(String host, String url){
+
+    HTTPClient http;
+    String payload;
+
+    Serial.print("[HTTP] begin...\n");
+
+    http.begin("http://"+host+url); //HTTP
+
+    Serial.print("[HTTP] GET...\n");
+    // start connection and send HTTP header
+    int httpCode = http.GET();
+
+    // httpCode will be negative on error
+    if(httpCode > 0) {
+        // HTTP header has been send and Server response header has been handled
+        Serial.printf("[HTTP] GET... code: %d\n", httpCode);
+
+        // file found at server
+        if(httpCode == HTTP_CODE_OK) {
+            payload = http.getString();
+        }
+    } else {
+        Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    }
+
+    http.end();
+
+
+    #ifdef PRINT_PAYLOAD
+        Serial.println("reply was:");
+        Serial.println("==========");
+        Serial.println(payload);
+        Serial.println("==========");
+    #endif
+    return payload;
 }
 
 void setup() {  
@@ -82,26 +119,17 @@ void setup() {
 }
 
 void loop() {
-   if (Serial.available() > 0) {
-    incomingByte = Serial.read();
-    incomingByte = incomingByte;
-    Serial.print("I received: ");
-    Serial.println(incomingByte, DEC);
-
-    if(incomingByte==48){
-      targetServoPos -= 5;
-    } else {
-      targetServoPos += 5;
-    }
-
-    if(targetServoPos>180){
-      targetServoPos = 180;
-    }
-    if(targetServoPos<0){
-      targetServoPos= 0;
-    }
-    
-    MoveServoToPosition(targetServoPos, 20);
-   }
-//  delay(1000);
+   String json = getJsonHTTP("bigpebbles.co.uk","/experiments/arduino_nm/pos.txt");
+   JsonObject& root = jsonBuffer.parseObject(json);
+   if (!root.success()) {
+    Serial.println("parseObject() failed");
+    return;
+  }
+    Serial.println("json parsed");
+    int pos = root["position"];
+  
+   MoveServoToPosition(pos,20);
+   
+//   delay(3600000); // 1 hr
+  delay(1000); // 10s
 }
