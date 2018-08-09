@@ -16,6 +16,8 @@ const String Password = "feefifofum";
 #define CENTER_POSITION 90
 int currentServoPosition = 0;
 Servo myservo;
+int incomingByte = 0; 
+int targetServoPos = 90;
 
 void SetConnectionLEDOn()
 {
@@ -80,6 +82,26 @@ void setup() {
 }
 
 void loop() {
-  
-  delay(1000);
+   if (Serial.available() > 0) {
+    incomingByte = Serial.read();
+    incomingByte = incomingByte;
+    Serial.print("I received: ");
+    Serial.println(incomingByte, DEC);
+
+    if(incomingByte==48){
+      targetServoPos -= 5;
+    } else {
+      targetServoPos += 5;
+    }
+
+    if(targetServoPos>180){
+      targetServoPos = 180;
+    }
+    if(targetServoPos<0){
+      targetServoPos= 0;
+    }
+    
+    MoveServoToPosition(targetServoPos, 20);
+   }
+//  delay(1000);
 }
