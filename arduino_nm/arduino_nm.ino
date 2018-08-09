@@ -128,8 +128,8 @@ void loop() {
     Serial.println("json parsed");
     int pos = root["position"];
   
-   MoveServoToPosition(pos,10);
+   MoveServoToPosition(pos,0);
    
 //   delay(3600000); // 1 hr
-  delay(1000); // 10s
+  delay(200); // 10s
 }
