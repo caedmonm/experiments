@@ -12,10 +12,23 @@ if(isset($_POST['pos'])){
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1" />
         <style>
+            body{
+                text-align: center;
+            }
+            #pos{
+                width:160px;
+                border-radius:4px; 
+                border:none; 
+                background-color: #eee; 
+                font-size:18px;
+                padding: 40px;
+                outline: none;
+            }
             .change{
-                width:40px;
-                height:40px;
+                width:80px;
+                height:80px;
                 line-height: 1;
                 text-align: center;
                 border:none;
@@ -30,7 +43,7 @@ if(isset($_POST['pos'])){
         </style>
     </head>
     <body>
-        <input id="pos" type="number" value="90" style="width:84px;border-radius:4px; border:none; background-color: #eee; padding: 10px 20px" />
+        <input id="pos" type="number" value="90" style="" />
         <p>
         <button data-change="-10" class="change">-</button>
         <button data-change="10" class="change">+</button>
