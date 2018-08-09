@@ -50,6 +50,17 @@ if(isset($_POST['pos'])){
         </p>
         <script>
             function set(val){
+                val = Number(val);
+                if(val<0){
+                    val = 0;
+                }
+                if(val>180){
+                    val = 180;
+                }
+                if(val!=Number($("#pos").val())){
+                    $("#pos").val(val);
+                }
+                
                 $.post("./index.php",{pos:val},function(d){
                     console.log('set to:',d);
                 });
