@@ -131,5 +131,5 @@ void loop() {
    MoveServoToPosition(pos,0);
    
 //   delay(3600000); // 1 hr
-  delay(200); // 10s
+  delay(500); // 10s
 }

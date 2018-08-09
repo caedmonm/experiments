@@ -43,7 +43,7 @@ if(isset($_POST['pos'])){
         </style>
     </head>
     <body>
-        <input id="pos" type="number" value="90" style="" />
+        <input id="pos" type="number" value="90" max="180" min="0" />
         <p>
         <button data-change="-10" class="change">-</button>
         <button data-change="10" class="change">+</button>
