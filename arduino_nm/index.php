@@ -71,7 +71,8 @@ if(isset($_POST['pos'])){
                 }
                 $("#slider").slider("value", val);
                 currentPos = val;
-
+                
+                val = 180 - val;
                 $.post("./index.php",{pos:val},function(d){
                     console.log('set to:',d);
                 });
