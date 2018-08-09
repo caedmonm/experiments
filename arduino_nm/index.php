@@ -12,10 +12,16 @@ if(isset($_POST['pos'])){
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1" />
         <style>
             body{
                 text-align: center;
+            }
+            #slider{
+                margin: 10px auto 0 auto;
+                max-width: 160px;
             }
             #pos{
                 width:160px;
@@ -44,11 +50,13 @@ if(isset($_POST['pos'])){
     </head>
     <body>
         <input id="pos" type="number" value="90" max="180" min="0" />
+        <div id="slider"></div>
         <p>
         <button data-change="-10" class="change">-</button>
         <button data-change="10" class="change">+</button>
         </p>
         <script>
+            var currentPos = 90;
             function set(val){
                 val = Number(val);
                 if(val<0){
@@ -60,7 +68,9 @@ if(isset($_POST['pos'])){
                 if(val!=Number($("#pos").val())){
                     $("#pos").val(val);
                 }
-                
+
+                currentPos = val;
+
                 $.post("./index.php",{pos:val},function(d){
                     console.log('set to:',d);
                 });
@@ -75,6 +85,14 @@ if(isset($_POST['pos'])){
                 var v = Number($("#pos").val()) + Number($(this).data("change"));
                 $("#pos").val(v);
                 set(v);
+            });
+            $("#slider").slider({
+                max:180,
+                min:0,
+                value: currentPos,
+                slide: function(e,ui){
+                    set(ui.value);
+                }
             });
         </script>
     </body>
