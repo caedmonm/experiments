@@ -17,7 +17,7 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
-var platforms, player;
+var platforms, player, landscape, poly;
 
 function preload() {
   this.load.image('sky', 'assets/sky.png');
@@ -35,19 +35,26 @@ function create() {
 
   platforms = this.physics.add.staticGroup();
 
-  platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+  platforms.create(400, 868, 'ground').setScale(20).refreshBody();
 
   platforms.create(600, 400, 'ground');
   platforms.create(50, 250, 'ground');
   platforms.create(750, 220, 'ground');
 
   player = this.physics.add.sprite(100, 450, 'boy');
-  player.setScale(.5, .5);
+  player.setScale(1,1);
 
   player.body.setGravityY(30)
 
   player.setBounce(0.2);
-  player.setCollideWorldBounds(true);
+  //player.setCollideWorldBounds(true);
+  // set bounds so the camera won't go outside the game world
+  //this.cameras.main.setBounds(0, 0, 800, 600);
+  // make the camera follow the player
+  this.cameras.main.startFollow(player);
+
+  // set background color, so the sky is not black    
+  this.cameras.main.setBackgroundColor('#ccccff');
 
 
   this.anims.create({
@@ -83,10 +90,12 @@ function create() {
   });
 
   this.physics.add.collider(stars, platforms);
+  this.physics.add.collider(stars, landscape);
+  this.physics.add.collider(player, platforms);
+  this.physics.add.collider(player, landscape);
 
   this.physics.add.overlap(player, stars, collectStar, null, this);
 
-  this.physics.add.collider(player, platforms);
   cursors = this.input.keyboard.createCursorKeys();
 }
 
@@ -97,12 +106,12 @@ function collectStar (player, star)
 
 function update() {
   if (cursors.left.isDown) {
-    player.setVelocityX(-100);
+    player.body.setVelocityX(-100);
 
     player.anims.play('left', true);
   }
   else if (cursors.right.isDown) {
-    player.setVelocityX(100);
+    player.body.setVelocityX(100);
 
     player.anims.play('right', true);
   }
