@@ -29,7 +29,6 @@ export default class App extends React.Component {
 
 	async sayWords(words) {
 		var playing = 0;
-		const overlap = .6;
 
 		const soundObjects = [
 			new Audio.Sound(),
@@ -38,27 +37,32 @@ export default class App extends React.Component {
 			new Audio.Sound()
 		];
 
-		await soundObjects[0].loadAsync(words[0]);
+		// preload sounds
+		for (let i = 0; i < 4; i++) {
+			await soundObjects[i].loadAsync(words[i]);
+		}
+
 		await soundObjects[0].playAsync();
 
 		soundObjects[0].setOnPlaybackStatusUpdate(async function (status) {
 			if (status.isLoaded == true) {
-				if ((overlap * status.playableDurationMillis) < status.positionMillis && playing == 0) {
+				if ((.5 * status.playableDurationMillis) < status.positionMillis && playing == 0) {
+					soundObjects[0] = null;
 					playing = 1;
-					await soundObjects[1].loadAsync(words[1]);
 					await soundObjects[1].playAsync();
 					soundObjects[1].setOnPlaybackStatusUpdate(async function (status) {
+						soundObjects[1] = null;
 						if (status.isLoaded == true) {
-							if ((overlap * status.playableDurationMillis) < status.positionMillis && playing == 1) {
+							if ((.7 * status.playableDurationMillis) < status.positionMillis && playing == 1) {
 								playing = 2;
-								await soundObjects[2].loadAsync(words[2]);
 								await soundObjects[2].playAsync();
 								soundObjects[2].setOnPlaybackStatusUpdate(async function (status) {
 									if (status.isLoaded == true) {
-										if ((overlap * status.playableDurationMillis) < status.positionMillis && playing == 2) {
+										if ((.6 * status.playableDurationMillis) < status.positionMillis && playing == 2) {
+											soundObjects[2] = null;
 											playing = 3;
-											await soundObjects[3].loadAsync(words[3]);
 											await soundObjects[3].playAsync();
+											soundObjects[3] = null;
 										}
 									}
 								});
@@ -77,14 +81,14 @@ export default class App extends React.Component {
 		var say = [];
 
 		if (this.state.voice) {
-			say.push(voice_opening[this.state.voice]);
+			say.push(voice_opening[this.state.voice].req);
 		}
 
-		for (var i = 0; i < words.length; i++) {
-			const word = words[i][Math.floor(Math.random() * words[i].length)];
-			write.push(word[0]);
+		for (var i = 0; i < wordLists.length; i++) {
+			const word = wordLists[i][Math.floor(Math.random() * wordLists[i].length)];
+			write.push(word.text);
 			if (this.state.voice) {
-				say.push(word[1][this.state.voice]);
+				say.push(word.audio[this.state.voice].req);
 			}
 		}
 
@@ -105,7 +109,6 @@ export default class App extends React.Component {
 		if (v == this.state.voice) {
 			return styles.voiceTabActive
 		}
-
 		return styles.voiceTab
 	}
 
@@ -156,14 +159,18 @@ const styles = StyleSheet.create({
 		width: 80,
 		height: 80,
 		padding: 5,
-		backgroundColor: "#f9f9f9",
+		backgroundColor: "#eeeeee",
+		borderColor: "#ffffff",
+		borderWidth: 2,
 		borderRadius: 5
 	},
 	voiceTabActive: {
 		width: 80,
 		height: 80,
 		padding: 5,
-		backgroundColor: "#eeeeee",
+		backgroundColor: "#dfe6e9",
+		borderColor: "#6c5ce7",
+		borderWidth: 2,
 		borderRadius: 5
 	},
 	voiceTabImg: {
@@ -181,7 +188,7 @@ const styles = StyleSheet.create({
 		fontFamily: 'nanum-pen-script',
 		fontSize: 30,
 		width: 300,
-		backgroundColor: '#f30',
+		backgroundColor: '#F44336',
 		padding: 10,
 		color: '#fff',
 		textAlign: 'center'
@@ -254,14 +261,14 @@ const words_all = [
 		//   "cave",
 		//   "sewer",
 		//   "slime",
-			  "toilet",
-			  "dungeon",
-			  "garbage",
-			  "arm pit",
-			  "pant",
-			  "fridge",
-			  "suburban",
-			  "urban",
+		"toilet",
+		"dungeon",
+		"garbage",
+		"arm pit",
+		"pant",
+		"fridge",
+		"suburban",
+		"urban",
 		"toe",
 		"butt",
 		"boob",
@@ -308,384 +315,543 @@ const words_all = [
 		"dribble",
 		"plop",
 		// "stench",
-		"toe nail"
+		"toenail"
 	]
 ]
 
 const voice_opening = [
 	null,
-	require("./assets/sounds/yourea.mp3")
+	{
+		req: require("./assets/sounds/yourea.mp3"),
+		audio: null
+	}
 ]
-const words = [
-	[
-		[
-			"spiny",
-			[
-				null,
-				require("./assets/sounds/spiny.mp3")
-			]
-		],
 
-		[
-			"rotten",
-			[
+var wordLists = [
+	[
+		{
+			"text": "spiny",
+			"audio": [
 				null,
-				require("./assets/sounds/rotten.mp3")
+				{
+					"req": require('./assets/sounds/spiny.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"mouldy",
-			[
+		},
+		{
+			"text": "rotten",
+			"audio": [
 				null,
-				require("./assets/sounds/mouldy.mp3")
+				{
+					"req": require('./assets/sounds/rotten.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"squelchy",
-			[
+		},
+		{
+			"text": "mouldy",
+			"audio": [
 				null,
-				require("./assets/sounds/squelchy.mp3")
+				{
+					"req": require('./assets/sounds/mouldy.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"stinky",
-			[
+		},
+		{
+			"text": "squelchy",
+			"audio": [
 				null,
-				require("./assets/sounds/stinky.mp3")
+				{
+					"req": require('./assets/sounds/squelchy.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"smelly",
-			[
+		},
+		{
+			"text": "stinky",
+			"audio": [
 				null,
-				require("./assets/sounds/smelly.mp3")
+				{
+					"req": require('./assets/sounds/stinky.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"slimy",
-			[
+		},
+		{
+			"text": "smelly",
+			"audio": [
 				null,
-				require("./assets/sounds/slimy.mp3")
+				{
+					"req": require('./assets/sounds/smelly.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"muddy",
-			[
+		},
+		{
+			"text": "slimy",
+			"audio": [
 				null,
-				require("./assets/sounds/muddy.mp3")
+				{
+					"req": require('./assets/sounds/slimy.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"squishy",
-			[
+		},
+		{
+			"text": "muddy",
+			"audio": [
 				null,
-				require("./assets/sounds/squishy.mp3")
+				{
+					"req": require('./assets/sounds/muddy.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"wandering",
-			[
+		},
+		{
+			"text": "squishy",
+			"audio": [
 				null,
-				require("./assets/sounds/wandering.mp3")
+				{
+					"req": require('./assets/sounds/squishy.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"scaly",
-			[
+		},
+		{
+			"text": "wandering",
+			"audio": [
 				null,
-				require("./assets/sounds/scaly.mp3")
+				{
+					"req": require('./assets/sounds/wandering.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"hairy",
-			[
+		},
+		{
+			"text": "scaly",
+			"audio": [
 				null,
-				require("./assets/sounds/hairy.mp3")
+				{
+					"req": require('./assets/sounds/scaly.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"furry",
-			[
+		},
+		{
+			"text": "hairy",
+			"audio": [
 				null,
-				require("./assets/sounds/furry.mp3")
+				{
+					"req": require('./assets/sounds/hairy.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"itching",
-			[
+		},
+		{
+			"text": "furry",
+			"audio": [
 				null,
-				require("./assets/sounds/itching.mp3")
+				{
+					"req": require('./assets/sounds/furry.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"scratching",
-			[
+		},
+		{
+			"text": "itching",
+			"audio": [
 				null,
-				require("./assets/sounds/scratching.mp3")
+				{
+					"req": require('./assets/sounds/itching.mp3'),
+					"audio": null
+				}
 			]
-		]
+		},
+		{
+			"text": "scratching",
+			"audio": [
+				null,
+				{
+					"req": require('./assets/sounds/scratching.mp3'),
+					"audio": null
+				}
+			]
+		}
 	],
 	[
-		[
-			"toilet",
-			[
+		{
+			"text": "toilet",
+			"audio": [
 				null,
-				require("./assets/sounds/toilet.mp3")
+				{
+					"req": require('./assets/sounds/toilet.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"dungeon",
-			[
+		},
+		{
+			"text": "dungeon",
+			"audio": [
 				null,
-				require("./assets/sounds/dungeon.mp3")
+				{
+					"req": require('./assets/sounds/dungeon.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"garbage",
-			[
+		},
+		{
+			"text": "garbage",
+			"audio": [
 				null,
-				require("./assets/sounds/garbage.mp3")
+				{
+					"req": require('./assets/sounds/garbage.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"arm pit",
-			[
+		},
+		{
+			"text": "arm pit",
+			"audio": [
 				null,
-				require("./assets/sounds/armpit.mp3")
+				{
+					"req": require('./assets/sounds/armpit.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"pant",
-			[
+		},
+		{
+			"text": "pant",
+			"audio": [
 				null,
-				require("./assets/sounds/pant.mp3")
+				{
+					"req": require('./assets/sounds/pant.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"fridge",
-			[
+		},
+		{
+			"text": "fridge",
+			"audio": [
 				null,
-				require("./assets/sounds/fridge.mp3")
+				{
+					"req": require('./assets/sounds/fridge.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"suburban",
-			[
+		},
+		{
+			"text": "suburban",
+			"audio": [
 				null,
-				require("./assets/sounds/suburban.mp3")
+				{
+					"req": require('./assets/sounds/suburban.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"urban",
-			[
+		},
+		{
+			"text": "urban",
+			"audio": [
 				null,
-				require("./assets/sounds/urban.mp3")
+				{
+					"req": require('./assets/sounds/urban.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"tree",
-			[
+		},
+		{
+			"text": "tree",
+			"audio": [
 				null,
-				require("./assets/sounds/tree.mp3")
+				{
+					"req": require('./assets/sounds/tree.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"river",
-			[
+		},
+		{
+			"text": "river",
+			"audio": [
 				null,
-				require("./assets/sounds/river.mp3")
+				{
+					"req": require('./assets/sounds/river.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"space",
-			[
+		},
+		{
+			"text": "space",
+			"audio": [
 				null,
-				require("./assets/sounds/space.mp3")
+				{
+					"req": require('./assets/sounds/space.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"field",
-			[
+		},
+		{
+			"text": "field",
+			"audio": [
 				null,
-				require("./assets/sounds/field.mp3")
+				{
+					"req": require('./assets/sounds/field.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"lake",
-			[
+		},
+		{
+			"text": "lake",
+			"audio": [
 				null,
-				require("./assets/sounds/lake.mp3")
+				{
+					"req": require('./assets/sounds/lake.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"ocean",
-			[
+		},
+		{
+			"text": "ocean",
+			"audio": [
 				null,
-				require("./assets/sounds/ocean.mp3")
+				{
+					"req": require('./assets/sounds/ocean.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"sea",
-			[
+		},
+		{
+			"text": "sea",
+			"audio": [
 				null,
-				require("./assets/sounds/sea.mp3")
+				{
+					"req": require('./assets/sounds/sea.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"wood",
-			[
+		},
+		{
+			"text": "wood",
+			"audio": [
 				null,
-				require("./assets/sounds/wood.mp3")
+				{
+					"req": require('./assets/sounds/wood.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"forest",
-			[
+		},
+		{
+			"text": "forest",
+			"audio": [
 				null,
-				require("./assets/sounds/forest.mp3")
+				{
+					"req": require('./assets/sounds/forest.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"desert",
-			[
+		},
+		{
+			"text": "desert",
+			"audio": [
 				null,
-				require("./assets/sounds/desert.mp3")
+				{
+					"req": require('./assets/sounds/desert.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"toe",
-			[
+		},
+		{
+			"text": "toe",
+			"audio": [
 				null,
-				require("./assets/sounds/toe.mp3")
+				{
+					"req": require('./assets/sounds/toe.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"butt",
-			[
+		},
+		{
+			"text": "butt",
+			"audio": [
 				null,
-				require("./assets/sounds/butt.mp3")
+				{
+					"req": require('./assets/sounds/butt.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"boob",
-			[
+		},
+		{
+			"text": "boob",
+			"audio": [
 				null,
-				require("./assets/sounds/boob.mp3")
+				{
+					"req": require('./assets/sounds/boob.mp3'),
+					"audio": null
+				}
 			]
-		]
+		}
 	],
 	[
-		[
-			"hobbit",
-			[
+		{
+			"text": "hobbit",
+			"audio": [
 				null,
-				require("./assets/sounds/hobbit.mp3")
+				{
+					"req": require('./assets/sounds/hobbit.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"cucumber",
-			[
+		},
+		{
+			"text": "cucumber",
+			"audio": [
 				null,
-				require("./assets/sounds/cucumber.mp3")
+				{
+					"req": require('./assets/sounds/cucumber.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"fudge",
-			[
+		},
+		{
+			"text": "fudge",
+			"audio": [
 				null,
-				require("./assets/sounds/fudge.mp3")
+				{
+					"req": require('./assets/sounds/fudge.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"slime",
-			[
+		},
+		{
+			"text": "slime",
+			"audio": [
 				null,
-				require("./assets/sounds/slime.mp3")
+				{
+					"req": require('./assets/sounds/slime.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"stink",
-			[
+		},
+		{
+			"text": "stink",
+			"audio": [
 				null,
-				require("./assets/sounds/stink.mp3")
+				{
+					"req": require('./assets/sounds/stink.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"turd",
-			[
+		},
+		{
+			"text": "turd",
+			"audio": [
 				null,
-				require("./assets/sounds/turd.mp3")
+				{
+					"req": require('./assets/sounds/turd.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"smell",
-			[
+		},
+		{
+			"text": "smell",
+			"audio": [
 				null,
-				require("./assets/sounds/smell.mp3")
+				{
+					"req": require('./assets/sounds/smell.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"tussock",
-			[
+		},
+		{
+			"text": "tussock",
+			"audio": [
 				null,
-				require("./assets/sounds/tussock.mp3")
+				{
+					"req": require('./assets/sounds/tussock.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"clod",
-			[
+		},
+		{
+			"text": "clod",
+			"audio": [
 				null,
-				require("./assets/sounds/clod.mp3")
+				{
+					"req": require('./assets/sounds/clod.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"worm",
-			[
+		},
+		{
+			"text": "worm",
+			"audio": [
 				null,
-				require("./assets/sounds/worm.mp3")
+				{
+					"req": require('./assets/sounds/worm.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"slug",
-			[
+		},
+		{
+			"text": "slug",
+			"audio": [
 				null,
-				require("./assets/sounds/slug.mp3")
+				{
+					"req": require('./assets/sounds/slug.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"banana",
-			[
+		},
+		{
+			"text": "banana",
+			"audio": [
 				null,
-				require("./assets/sounds/banana.mp3")
+				{
+					"req": require('./assets/sounds/banana.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"bunion",
-			[
+		},
+		{
+			"text": "bunion",
+			"audio": [
 				null,
-				require("./assets/sounds/bunion.mp3")
+				{
+					"req": require('./assets/sounds/bunion.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"dribble",
-			[
+		},
+		{
+			"text": "dribble",
+			"audio": [
 				null,
-				require("./assets/sounds/dribble.mp3")
+				{
+					"req": require('./assets/sounds/dribble.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"plop",
-			[
+		},
+		{
+			"text": "plop",
+			"audio": [
 				null,
-				require("./assets/sounds/plop.mp3")
+				{
+					"req": require('./assets/sounds/plop.mp3'),
+					"audio": null
+				}
 			]
-		],
-		[
-			"toe nail",
-			[
+		},
+		{
+			"text": "toenail",
+			"audio": [
 				null,
-				require("./assets/sounds/toe nail.mp3")
+				{
+					"req": require('./assets/sounds/toenail.mp3'),
+					"audio": null
+				}
 			]
-		]
+		}
 	]
 ];
