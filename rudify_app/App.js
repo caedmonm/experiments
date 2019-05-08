@@ -14,6 +14,7 @@ export default class App extends React.Component {
 				pitch: 1,
 				inProgress: false,
 				rate: .75,
+				voice: 0
 			}
 		}
 	}
@@ -26,42 +27,40 @@ export default class App extends React.Component {
 		this.setState({ fontLoaded: true });
 	}
 
+
 	async sayWords(words) {
 		var playing = 0;
-		console.log(words);
-		const soundObject = new Audio.Sound();
-		try {
-			await soundObject.loadAsync(words[0]);
-			await soundObject.playAsync();
-		} catch (error) {
-			console.log(error);
-		}
-		
-		soundObject.setOnPlaybackStatusUpdate(async function(status){
-			if(status.isLoaded == true){ 
-				if((.7 * status.playableDurationMillis) < status.positionMillis && playing == 0){
-					playing = 1;
-					
-					var soundObject2 = new Audio.Sound();
-					try {
-						await soundObject2.loadAsync(words[1]);
-						await soundObject2.playAsync();
-					} catch (error) {
-						console.log(error);
-					}
+		const soundObjects = [
+			new Audio.Sound(),
+			new Audio.Sound(),
+			new Audio.Sound(),
+			new Audio.Sound()
+		];
 
-					soundObject2.setOnPlaybackStatusUpdate(async function(status){
-						if(status.isLoaded == true){ 
-							if((.7 * status.playableDurationMillis) < status.positionMillis && playing == 1){
+		await soundObjects[0].loadAsync(words[0]);
+		await soundObjects[0].playAsync();
+
+		soundObjects[0].setOnPlaybackStatusUpdate(async function (status) {
+			if (status.isLoaded == true) {
+				if ((.7 * status.playableDurationMillis) < status.positionMillis && playing == 0) {
+					playing = 1;
+					await soundObjects[1].loadAsync(words[1]);
+					await soundObjects[1].playAsync();
+					soundObjects[1].setOnPlaybackStatusUpdate(async function (status) {
+						if (status.isLoaded == true) {
+							if ((.7 * status.playableDurationMillis) < status.positionMillis && playing == 1) {
 								playing = 2;
-								
-								var soundObject3 = new Audio.Sound();
-								try {
-									await soundObject3.loadAsync(words[2]);
-									await soundObject3.playAsync();
-								} catch (error) {
-									console.log(error);
-								}
+								await soundObjects[2].loadAsync(words[2]);
+								await soundObjects[2].playAsync();
+								soundObjects[2].setOnPlaybackStatusUpdate(async function (status) {
+									if (status.isLoaded == true) {
+										if ((.7 * status.playableDurationMillis) < status.positionMillis && playing == 2) {
+											playing = 3;
+											await soundObjects[3].loadAsync(words[3]);
+											await soundObjects[3].playAsync();
+										}
+									}
+								});
 							}
 						}
 					});
@@ -71,27 +70,31 @@ export default class App extends React.Component {
 	}
 
 	getRude = () => {
-		var say = [];
 		var write = [
 			"You're a "
 		];
-		for (var i = 0; i < words.length; i++) {
-			const word = words[i][Math.floor(Math.random() * words[i].length)];
-			console.log('word',word);
-			say.push(word[1]);
-			write.push(word[0]);
+		var say = [];
+
+		if (this.state.voice) {
+			say.push(voice_opening[this.state.voice]);
 		}
 
-		// Speech.speak(out, {
-		// 	language: "en",
-		// 	pitch: 1,
-		// 	inProgress: false,
-		// 	rate: .75
-		// });
+		for (var i = 0; i < words.length; i++) {
+			const word = words[i][Math.floor(Math.random() * words[i].length)];
+			write.push(word[0]);
+			if (this.state.voice) {
+				say.push(word[1][this.state.voice]);
+			}
+		}
 
-		var text = write[0] + " " + write[1] + " " + write[2]+ " " + write[3];
+		var text = write[0] + " " + write[1] + " " + write[2] + " " + write[3];
 		this.setState({ rudeText: text });
-		this.sayWords(say);
+
+		if (!this.state.voice) {
+			Speech.speak(text);
+		} else {
+			this.sayWords(say);
+		}
 	}
 	render() {
 		if (!this.state.fontLoaded) {
@@ -101,7 +104,6 @@ export default class App extends React.Component {
 			<View style={styles.container}>
 
 				<Text style={styles.output}>{this.state.rudeText}</Text>
-
 
 				<TouchableWithoutFeedback onPress={this.getRude}>
 					<Text style={styles.rudeButton}>Call me something rude!</Text>
@@ -256,152 +258,260 @@ const words_all = [
 	]
 ]
 
-
+const voice_opening = [
+	null,
+	require("./assets/sounds/yourea.mp3")
+]
 const words = [
 	[
 		[
 			"wandering",
-			require("./assets/sounds/wandering.mp3")
+			[
+				null,
+				require("./assets/sounds/wandering.mp3")
+			]
 		],
 		[
 			"scaly",
-			require("./assets/sounds/scaly.mp3")
+			[
+				null,
+				require("./assets/sounds/scaly.mp3")
+			]
 		],
 		[
 			"hairy",
-			require("./assets/sounds/hairy.mp3")
+			[
+				null,
+				require("./assets/sounds/hairy.mp3")
+			]
 		],
 		[
 			"furry",
-			require("./assets/sounds/furry.mp3")
+			[
+				null,
+				require("./assets/sounds/furry.mp3")
+			]
 		],
 		[
 			"itching",
-			require("./assets/sounds/itching.mp3")
+			[
+				null,
+				require("./assets/sounds/itching.mp3")
+			]
 		],
 		[
 			"scratching",
-			require("./assets/sounds/scratching.mp3")
+			[
+				null,
+				require("./assets/sounds/scratching.mp3")
+			]
 		]
 	],
 	[
 		[
 			"tree",
-			require("./assets/sounds/tree.mp3")
+			[
+				null,
+				require("./assets/sounds/tree.mp3")
+			]
 		],
 		[
 			"river",
-			require("./assets/sounds/river.mp3")
+			[
+				null,
+				require("./assets/sounds/river.mp3")
+			]
 		],
 		[
 			"space",
-			require("./assets/sounds/space.mp3")
+			[
+				null,
+				require("./assets/sounds/space.mp3")
+			]
 		],
 		[
 			"field",
-			require("./assets/sounds/field.mp3")
+			[
+				null,
+				require("./assets/sounds/field.mp3")
+			]
 		],
 		[
 			"lake",
-			require("./assets/sounds/lake.mp3")
+			[
+				null,
+				require("./assets/sounds/lake.mp3")
+			]
 		],
 		[
 			"ocean",
-			require("./assets/sounds/ocean.mp3")
+			[
+				null,
+				require("./assets/sounds/ocean.mp3")
+			]
 		],
 		[
 			"sea",
-			require("./assets/sounds/sea.mp3")
+			[
+				null,
+				require("./assets/sounds/sea.mp3")
+			]
 		],
 		[
 			"wood",
-			require("./assets/sounds/wood.mp3")
+			[
+				null,
+				require("./assets/sounds/wood.mp3")
+			]
 		],
 		[
 			"forest",
-			require("./assets/sounds/forest.mp3")
+			[
+				null,
+				require("./assets/sounds/forest.mp3")
+			]
 		],
 		[
 			"desert",
-			require("./assets/sounds/desert.mp3")
+			[
+				null,
+				require("./assets/sounds/desert.mp3")
+			]
 		],
 		[
 			"toe",
-			require("./assets/sounds/toe.mp3")
+			[
+				null,
+				require("./assets/sounds/toe.mp3")
+			]
 		],
 		[
 			"butt",
-			require("./assets/sounds/butt.mp3")
+			[
+				null,
+				require("./assets/sounds/butt.mp3")
+			]
 		],
 		[
 			"boob",
-			require("./assets/sounds/boob.mp3")
+			[
+				null,
+				require("./assets/sounds/boob.mp3")
+			]
 		]
 	],
 	[
 		[
 			"hobbit",
-			require("./assets/sounds/hobbit.mp3")
+			[
+				null,
+				require("./assets/sounds/hobbit.mp3")
+			]
 		],
 		[
 			"cucumber",
-			require("./assets/sounds/cucumber.mp3")
+			[
+				null,
+				require("./assets/sounds/cucumber.mp3")
+			]
 		],
 		[
 			"fudge",
-			require("./assets/sounds/fudge.mp3")
+			[
+				null,
+				require("./assets/sounds/fudge.mp3")
+			]
 		],
 		[
 			"slime",
-			require("./assets/sounds/slime.mp3")
+			[
+				null,
+				require("./assets/sounds/slime.mp3")
+			]
 		],
 		[
 			"stink",
-			require("./assets/sounds/stink.mp3")
+			[
+				null,
+				require("./assets/sounds/stink.mp3")
+			]
 		],
 		[
 			"turd",
-			require("./assets/sounds/turd.mp3")
+			[
+				null,
+				require("./assets/sounds/turd.mp3")
+			]
 		],
 		[
 			"smell",
-			require("./assets/sounds/smell.mp3")
+			[
+				null,
+				require("./assets/sounds/smell.mp3")
+			]
 		],
 		[
 			"tussock",
-			require("./assets/sounds/tussock.mp3")
+			[
+				null,
+				require("./assets/sounds/tussock.mp3")
+			]
 		],
 		[
 			"clod",
-			require("./assets/sounds/clod.mp3")
+			[
+				null,
+				require("./assets/sounds/clod.mp3")
+			]
 		],
 		[
 			"worm",
-			require("./assets/sounds/worm.mp3")
+			[
+				null,
+				require("./assets/sounds/worm.mp3")
+			]
 		],
 		[
 			"slug",
-			require("./assets/sounds/slug.mp3")
+			[
+				null,
+				require("./assets/sounds/slug.mp3")
+			]
 		],
 		[
 			"banana",
-			require("./assets/sounds/banana.mp3")
+			[
+				null,
+				require("./assets/sounds/banana.mp3")
+			]
 		],
 		[
 			"bunion",
-			require("./assets/sounds/bunion.mp3")
+			[
+				null,
+				require("./assets/sounds/bunion.mp3")
+			]
 		],
 		[
 			"dribble",
-			require("./assets/sounds/dribble.mp3")
+			[
+				null,
+				require("./assets/sounds/dribble.mp3")
+			]
 		],
 		[
 			"plop",
-			require("./assets/sounds/plop.mp3")
+			[
+				null,
+				require("./assets/sounds/plop.mp3")
+			]
 		],
 		[
 			"toe nail",
-			require("./assets/sounds/toe nail.mp3")
+			[
+				null,
+				require("./assets/sounds/toe nail.mp3")
+			]
 		]
 	]
 ];
