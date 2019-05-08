@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Image, View, TouchableWithoutFeedback,TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, Image, View, TouchableWithoutFeedback, TouchableHighlight } from 'react-native';
 // import { Header } from 'react-native-elements';
 import { Font, Speech, Audio } from 'expo';
 
@@ -99,18 +99,18 @@ export default class App extends React.Component {
 	}
 
 	voiceStyle = (v) => {
-		if(this.state.voice==undefined && !v){
+		if (this.state.voice == undefined && !v) {
 			return styles.voiceTabActive
 		}
-		if(v == this.state.voice){
+		if (v == this.state.voice) {
 			return styles.voiceTabActive
 		}
-			
+
 		return styles.voiceTab
 	}
 
 	setVoice = (v) => {
-		this.setState({voice:v});
+		this.setState({ voice: v });
 	}
 
 	render() {
@@ -123,13 +123,13 @@ export default class App extends React.Component {
 					<TouchableHighlight value="0" onPress={() => this.setVoice(0)} style={this.voiceStyle(0)} >
 						<Image
 							source={require('./assets/icons/bot.png')}
-							style={styles.voiceTabImg} 
+							style={styles.voiceTabImg}
 						/>
 					</TouchableHighlight>
 					<TouchableHighlight value="1" onPress={() => this.setVoice(1)} style={this.voiceStyle(1)} >
 						<Image
 							source={require('./assets/icons/boy.png')}
-							style={styles.voiceTabImg} 
+							style={styles.voiceTabImg}
 						/>
 					</TouchableHighlight>
 				</View>
@@ -148,28 +148,28 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
 	voiceTabs: {
 		flex: 1,
-        flexDirection: 'row',
+		flexDirection: 'row',
 		justifyContent: 'space-between',
-		top:20
+		top: 20
 	},
 	voiceTab: {
 		width: 80,
 		height: 80,
-		padding:5,
+		padding: 5,
 		backgroundColor: "#f9f9f9",
 		borderRadius: 5
 	},
 	voiceTabActive: {
 		width: 80,
 		height: 80,
-		padding:5,
+		padding: 5,
 		backgroundColor: "#eeeeee",
 		borderRadius: 5
 	},
-	voiceTabImg:{
-		width:70,
-		height:70
-	},	
+	voiceTabImg: {
+		width: 70,
+		height: 70
+	},
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
@@ -202,16 +202,15 @@ const words_all = [
 		"furry",
 		"itching",
 		"scratching",
-							"spiny",
-							"rotten",
-							"moldy",
-							"squelchy",
-							"stinky",
-							"smelly",
-							"slimy",
-							"muddy",
-							"squishy",
-							"squelchy",
+		"spiny",
+		"rotten",
+		"mouldy",
+		"squelchy",
+		"stinky",
+		"smelly",
+		"slimy",
+		"muddy",
+		"squishy",
 		//   "spotty",
 		//   "orange",
 		//   "faded",
@@ -255,14 +254,14 @@ const words_all = [
 		//   "cave",
 		//   "sewer",
 		//   "slime",
-		//   "toilet",
-		//   "dungeon",
-		//   "garbage",
-		//   "arm pit",
-		//   "pant",
-		//   "fridge",
-		//   "suburban",
-		//   "urban",
+			  "toilet",
+			  "dungeon",
+			  "garbage",
+			  "arm pit",
+			  "pant",
+			  "fridge",
+			  "suburban",
+			  "urban",
 		"toe",
 		"butt",
 		"boob",
@@ -274,7 +273,7 @@ const words_all = [
 		"cucumber",
 		"fudge",
 		"slime",
-		// "mold",
+		// "mould",
 		"stink",
 		"turd",
 		"smell",
@@ -320,6 +319,70 @@ const voice_opening = [
 const words = [
 	[
 		[
+			"spiny",
+			[
+				null,
+				require("./assets/sounds/spiny.mp3")
+			]
+		],
+
+		[
+			"rotten",
+			[
+				null,
+				require("./assets/sounds/rotten.mp3")
+			]
+		],
+		[
+			"mouldy",
+			[
+				null,
+				require("./assets/sounds/mouldy.mp3")
+			]
+		],
+		[
+			"squelchy",
+			[
+				null,
+				require("./assets/sounds/squelchy.mp3")
+			]
+		],
+		[
+			"stinky",
+			[
+				null,
+				require("./assets/sounds/stinky.mp3")
+			]
+		],
+		[
+			"smelly",
+			[
+				null,
+				require("./assets/sounds/smelly.mp3")
+			]
+		],
+		[
+			"slimy",
+			[
+				null,
+				require("./assets/sounds/slimy.mp3")
+			]
+		],
+		[
+			"muddy",
+			[
+				null,
+				require("./assets/sounds/muddy.mp3")
+			]
+		],
+		[
+			"squishy",
+			[
+				null,
+				require("./assets/sounds/squishy.mp3")
+			]
+		],
+		[
 			"wandering",
 			[
 				null,
@@ -363,6 +426,62 @@ const words = [
 		]
 	],
 	[
+		[
+			"toilet",
+			[
+				null,
+				require("./assets/sounds/toilet.mp3")
+			]
+		],
+		[
+			"dungeon",
+			[
+				null,
+				require("./assets/sounds/dungeon.mp3")
+			]
+		],
+		[
+			"garbage",
+			[
+				null,
+				require("./assets/sounds/garbage.mp3")
+			]
+		],
+		[
+			"arm pit",
+			[
+				null,
+				require("./assets/sounds/armpit.mp3")
+			]
+		],
+		[
+			"pant",
+			[
+				null,
+				require("./assets/sounds/pant.mp3")
+			]
+		],
+		[
+			"fridge",
+			[
+				null,
+				require("./assets/sounds/fridge.mp3")
+			]
+		],
+		[
+			"suburban",
+			[
+				null,
+				require("./assets/sounds/suburban.mp3")
+			]
+		],
+		[
+			"urban",
+			[
+				null,
+				require("./assets/sounds/urban.mp3")
+			]
+		],
 		[
 			"tree",
 			[
