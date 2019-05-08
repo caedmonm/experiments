@@ -29,6 +29,8 @@ export default class App extends React.Component {
 
 	async sayWords(words) {
 		var playing = 0;
+		const overlap = .6;
+
 		const soundObjects = [
 			new Audio.Sound(),
 			new Audio.Sound(),
@@ -41,19 +43,19 @@ export default class App extends React.Component {
 
 		soundObjects[0].setOnPlaybackStatusUpdate(async function (status) {
 			if (status.isLoaded == true) {
-				if ((.7 * status.playableDurationMillis) < status.positionMillis && playing == 0) {
+				if ((overlap * status.playableDurationMillis) < status.positionMillis && playing == 0) {
 					playing = 1;
 					await soundObjects[1].loadAsync(words[1]);
 					await soundObjects[1].playAsync();
 					soundObjects[1].setOnPlaybackStatusUpdate(async function (status) {
 						if (status.isLoaded == true) {
-							if ((.7 * status.playableDurationMillis) < status.positionMillis && playing == 1) {
+							if ((overlap * status.playableDurationMillis) < status.positionMillis && playing == 1) {
 								playing = 2;
 								await soundObjects[2].loadAsync(words[2]);
 								await soundObjects[2].playAsync();
 								soundObjects[2].setOnPlaybackStatusUpdate(async function (status) {
 									if (status.isLoaded == true) {
-										if ((.7 * status.playableDurationMillis) < status.positionMillis && playing == 2) {
+										if ((overlap * status.playableDurationMillis) < status.positionMillis && playing == 2) {
 											playing = 3;
 											await soundObjects[3].loadAsync(words[3]);
 											await soundObjects[3].playAsync();
