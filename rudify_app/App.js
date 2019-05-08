@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
-import { Header } from 'react-native-elements';
-import { Font, Speech, Audio, FileSystem } from 'expo';
+import { StyleSheet, Text, Image, View, TouchableWithoutFeedback,TouchableHighlight } from 'react-native';
+// import { Header } from 'react-native-elements';
+import { Font, Speech, Audio } from 'expo';
 
 export default class App extends React.Component {
 	constructor() {
@@ -23,7 +23,6 @@ export default class App extends React.Component {
 		await Font.loadAsync({
 			'nanum-pen-script': require('./assets/fonts/NanumPenScript-Regular.ttf')
 		});
-
 		this.setState({ fontLoaded: true });
 	}
 
@@ -96,12 +95,42 @@ export default class App extends React.Component {
 			this.sayWords(say);
 		}
 	}
+
+	voiceStyle = (v) => {
+		if(this.state.voice==undefined && !v){
+			return styles.voiceTabActive
+		}
+		if(v == this.state.voice){
+			return styles.voiceTabActive
+		}
+			
+		return styles.voiceTab
+	}
+
+	setVoice = (v) => {
+		this.setState({voice:v});
+	}
+
 	render() {
 		if (!this.state.fontLoaded) {
 			return null
 		}
 		return (
 			<View style={styles.container}>
+				<View style={styles.voiceTabs}>
+					<TouchableHighlight value="0" onPress={() => this.setVoice(0)} style={this.voiceStyle(0)} >
+						<Image
+							source={require('./assets/icons/bot.png')}
+							style={styles.voiceTabImg} 
+						/>
+					</TouchableHighlight>
+					<TouchableHighlight value="1" onPress={() => this.setVoice(1)} style={this.voiceStyle(1)} >
+						<Image
+							source={require('./assets/icons/boy.png')}
+							style={styles.voiceTabImg} 
+						/>
+					</TouchableHighlight>
+				</View>
 
 				<Text style={styles.output}>{this.state.rudeText}</Text>
 
@@ -115,6 +144,30 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	voiceTabs: {
+		flex: 1,
+        flexDirection: 'row',
+		justifyContent: 'space-between',
+		top:20
+	},
+	voiceTab: {
+		width: 80,
+		height: 80,
+		padding:5,
+		backgroundColor: "#f9f9f9",
+		borderRadius: 5
+	},
+	voiceTabActive: {
+		width: 80,
+		height: 80,
+		padding:5,
+		backgroundColor: "#eeeeee",
+		borderRadius: 5
+	},
+	voiceTabImg:{
+		width:70,
+		height:70
+	},	
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
