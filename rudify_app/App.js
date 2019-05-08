@@ -27,6 +27,7 @@ export default class App extends React.Component {
 	}
 
 	async sayWords(words) {
+		var playing = 0;
 		console.log(words);
 		const soundObject = new Audio.Sound();
 		try {
@@ -38,17 +39,33 @@ export default class App extends React.Component {
 		
 		soundObject.setOnPlaybackStatusUpdate(async function(status){
 			if(status.isLoaded == true){ 
-				console.log(status);
-				// if(playableDurationMillis == positionMillis){
-				// 	console.log(status);
-				// 	var soundObject2 = new Audio.Sound();
-				// 	try {
-				// 		await soundObject2.loadAsync(words[1]);
-				// 		await soundObject2.playAsync();
-				// 	} catch (error) {
-				// 		console.log(error);
-				// 	}
-				// }
+				if((.7 * status.playableDurationMillis) < status.positionMillis && playing == 0){
+					playing = 1;
+					
+					var soundObject2 = new Audio.Sound();
+					try {
+						await soundObject2.loadAsync(words[1]);
+						await soundObject2.playAsync();
+					} catch (error) {
+						console.log(error);
+					}
+
+					soundObject2.setOnPlaybackStatusUpdate(async function(status){
+						if(status.isLoaded == true){ 
+							if((.7 * status.playableDurationMillis) < status.positionMillis && playing == 1){
+								playing = 2;
+								
+								var soundObject3 = new Audio.Sound();
+								try {
+									await soundObject3.loadAsync(words[2]);
+									await soundObject3.playAsync();
+								} catch (error) {
+									console.log(error);
+								}
+							}
+						}
+					});
+				}
 			}
 		});
 	}
