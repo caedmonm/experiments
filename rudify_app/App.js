@@ -45,24 +45,34 @@ export default class App extends React.Component {
 		await soundObjects[0].playAsync();
 
 		soundObjects[0].setOnPlaybackStatusUpdate(async function (status) {
+			if(status.didJustFinish){
+				soundObjects[0].unloadAsync().catch(()=>{});
+			}
 			if (status.isLoaded == true) {
 				if ((.5 * status.playableDurationMillis) < status.positionMillis && playing == 0) {
-					soundObjects[0] = null;
 					playing = 1;
 					await soundObjects[1].playAsync();
 					soundObjects[1].setOnPlaybackStatusUpdate(async function (status) {
-						soundObjects[1] = null;
+						if(status.didJustFinish){
+							soundObjects[1].unloadAsync().catch(()=>{});
+						}
 						if (status.isLoaded == true) {
 							if ((.7 * status.playableDurationMillis) < status.positionMillis && playing == 1) {
 								playing = 2;
 								await soundObjects[2].playAsync();
 								soundObjects[2].setOnPlaybackStatusUpdate(async function (status) {
+									if(status.didJustFinish){
+										soundObjects[2].unloadAsync().catch(()=>{});
+									}
 									if (status.isLoaded == true) {
 										if ((.6 * status.playableDurationMillis) < status.positionMillis && playing == 2) {
-											soundObjects[2] = null;
 											playing = 3;
 											await soundObjects[3].playAsync();
-											soundObjects[3] = null;
+											soundObjects[3].setOnPlaybackStatusUpdate(async function (status) {
+												if(status.didJustFinish){
+													soundObjects[3].unloadAsync().catch(()=>{});
+												}
+											});
 										}
 									}
 								});
