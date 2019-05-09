@@ -44,6 +44,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/icons/bot.png
+    - assets/icons/boy.png
     - assets/voice1/armpit.mp3
     - assets/voice1/attic.mp3
     - assets/voice1/banana.mp3

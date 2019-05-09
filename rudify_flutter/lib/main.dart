@@ -230,7 +230,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(
+            widget.title,
+            style: TextStyle(fontSize: 36),
+            textAlign: TextAlign.center
+          ),
         ),
         body: Center(
           child: Padding(
@@ -252,26 +256,34 @@ class _MyHomePageState extends State<MyHomePage> {
           label: Text("RUDIFY!"),
         ),
         bottomNavigationBar: BottomAppBar(
-            child: Row(
+            child: ButtonBar(
           children: <Widget>[
             FlatButton(
-                onPressed: () => {_voice = 0},
-                color: Colors.orange,
+                onPressed: () => setState(() {
+                      _voice = 0;
+                    }),
+                color: _voice == 0 ? Colors.blue : Colors.grey,
                 child: Row(
                   children: <Widget>[
                     Text(
                       "Robo",
+                      style: TextStyle(fontSize: 26),
                     ),
+                    Image.asset('assets/icons/bot.png', width: 20, height: 20),
                   ],
                 )),
             FlatButton(
-                onPressed: () => {_voice = 1},
-                color: Colors.orange,
+                onPressed: () => setState(() {
+                      _voice = 1;
+                    }),
+                color: _voice == 1 ? Colors.blue : Colors.grey,
                 child: Row(
                   children: <Widget>[
                     Text(
                       "Ivo",
+                      style: TextStyle(fontSize: 26),
                     ),
+                    Image.asset('assets/icons/boy.png', width: 20, height: 20),
                   ],
                 )),
           ],
