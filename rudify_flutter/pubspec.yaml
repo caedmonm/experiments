@@ -45,59 +45,111 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/voice1/armpit.mp3
+    - assets/voice1/attic.mp3
     - assets/voice1/banana.mp3
     - assets/voice1/bog.mp3
+    - assets/voice1/bogey.mp3
     - assets/voice1/boob.mp3
+    - assets/voice1/boring.mp3
+    - assets/voice1/bulging.mp3
     - assets/voice1/bunion.mp3
+    - assets/voice1/burp.mp3
+    - assets/voice1/bushy.mp3
     - assets/voice1/butt.mp3
+    - assets/voice1/buttock.mp3
+    - assets/voice1/cave.mp3
+    - assets/voice1/cellar.mp3
+    - assets/voice1/cheese.mp3
+    - assets/voice1/cheesy.mp3
+    - assets/voice1/chimney.mp3
+    - assets/voice1/cist.mp3
     - assets/voice1/clod.mp3
     - assets/voice1/cucumber.mp3
     - assets/voice1/desert.mp3
+    - assets/voice1/disgusting.mp3
     - assets/voice1/dribble.mp3
+    - assets/voice1/drip.mp3
+    - assets/voice1/dripping.mp3
     - assets/voice1/dungeon.mp3
+    - assets/voice1/faded.mp3
+    - assets/voice1/fart.mp3
     - assets/voice1/field.mp3
+    - assets/voice1/flump.mp3
     - assets/voice1/forest.mp3
     - assets/voice1/fridge.mp3
     - assets/voice1/fudge.mp3
     - assets/voice1/furry.mp3
     - assets/voice1/garbage.mp3
+    - assets/voice1/gassy.mp3
+    - assets/voice1/gelatinous.mp3
+    - assets/voice1/greasy.mp3
     - assets/voice1/gutter.mp3
     - assets/voice1/hairy.mp3
     - assets/voice1/hedge.mp3
     - assets/voice1/hobbit.mp3
+    - assets/voice1/hole.mp3
     - assets/voice1/itching.mp3
     - assets/voice1/lake.mp3
+    - assets/voice1/log.mp3
+    - assets/voice1/lump.mp3
+    - assets/voice1/marsh.mp3
+    - assets/voice1/mould.mp3
     - assets/voice1/mouldy.mp3
     - assets/voice1/mud.mp3
     - assets/voice1/muddy.mp3
+    - assets/voice1/nostrill.mp3
+    - assets/voice1/nugget.mp3
     - assets/voice1/ocean.mp3
+    - assets/voice1/oily.mp3
+    - assets/voice1/oozing.mp3
+    - assets/voice1/orange.mp3
+    - assets/voice1/orifice.mp3
+    - assets/voice1/ouzing.mp3
     - assets/voice1/pant.mp3
     - assets/voice1/plop.mp3
+    - assets/voice1/plug.mp3
+    - assets/voice1/rancid.mp3
+    - assets/voice1/raspberry.mp3
     - assets/voice1/river.mp3
     - assets/voice1/rotten.mp3
+    - assets/voice1/scab.mp3
+    - assets/voice1/scabby.mp3
     - assets/voice1/scaly.mp3
     - assets/voice1/scratching.mp3
     - assets/voice1/sea.mp3
+    - assets/voice1/sewer.mp3
     - assets/voice1/slime.mp3
     - assets/voice1/slimy.mp3
     - assets/voice1/slug.mp3
     - assets/voice1/smell.mp3
     - assets/voice1/smelly.mp3
+    - assets/voice1/soggy.mp3
     - assets/voice1/space.mp3
+    - assets/voice1/spillage.mp3
     - assets/voice1/spiny.mp3
+    - assets/voice1/spotty.mp3
+    - assets/voice1/squeaky.mp3
     - assets/voice1/squelchy.mp3
     - assets/voice1/squishy.mp3
+    - assets/voice1/stain.mp3
+    - assets/voice1/stench.mp3
     - assets/voice1/stink.mp3
     - assets/voice1/stinky.mp3
     - assets/voice1/suburban.mp3
+    - assets/voice1/toad.mp3
     - assets/voice1/toe.mp3
     - assets/voice1/toenail.mp3
     - assets/voice1/toilet.mp3
     - assets/voice1/tree.mp3
+    - assets/voice1/trumpet.mp3
     - assets/voice1/turd.mp3
     - assets/voice1/tussock.mp3
+    - assets/voice1/twit.mp3
     - assets/voice1/urban.mp3
     - assets/voice1/wandering.mp3
+    - assets/voice1/wart.mp3
+    - assets/voice1/waxy.mp3
+    - assets/voice1/wiener.mp3
     - assets/voice1/wood.mp3
     - assets/voice1/worm.mp3
     - assets/voice1/yourea.mp3
