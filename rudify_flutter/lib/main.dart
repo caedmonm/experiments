@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Rudify App',
       theme: ThemeData(
         fontFamily: 'Nanum',
         primarySwatch: Colors.blue,
@@ -231,7 +231,6 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(
             widget.title,
             style: TextStyle(fontSize: 36),
-            textAlign: TextAlign.center
           ),
         ),
         body: Center(
@@ -241,7 +240,9 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text('$_text',
-                    style: TextStyle(fontFamily: 'Nanum', fontSize: 40)),
+                  style: TextStyle(fontFamily: 'Nanum', fontWeight: FontWeight.bold, fontSize: 80, color: Colors.pink),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
           ),
