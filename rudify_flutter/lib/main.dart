@@ -72,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
       "soggy",
       "oily",
       "greasy",
-      "oozing",
       "boring",
       "gelatinous",
       "rancid",
