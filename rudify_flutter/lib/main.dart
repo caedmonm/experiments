@@ -177,9 +177,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Future _playWord(say, i) async {
     Duration _duration = new Duration();
     Duration _position = new Duration();
-    List overlap = [.4, .8, .4, 1];
-
-    audioCaches[i].play("voice1/" + say[i] + ".mp3");
+    List overlap = [.4, .6, .4, 1];
+    audioCaches[i].play("voice$_voice/" + say[i] + ".mp3");
 
     players[i].durationHandler = (d) => setState(() {
           _duration = d;
@@ -217,10 +216,10 @@ class _MyHomePageState extends State<MyHomePage> {
       await flutterTts.speak(_text);
       await flutterTts.setVolume(1.0);
     } else {
-      audioCaches[0].load("voice${_voice}/" + say[0] + '.mp3');
-      audioCaches[1].load("voice${_voice}/" + say[1] + '.mp3');
-      audioCaches[2].load("voice${_voice}/" + say[2] + '.mp3');
-      audioCaches[3].load("voice${_voice}/" + say[3] + '.mp3');
+      audioCaches[0].load("voice$_voice/" + say[0] + '.mp3');
+      audioCaches[1].load("voice$_voice/" + say[1] + '.mp3');
+      audioCaches[2].load("voice$_voice/" + say[2] + '.mp3');
+      audioCaches[3].load("voice$_voice/" + say[3] + '.mp3');
       _playWord(say, 0);
     }
   }
@@ -283,6 +282,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(fontSize: 26),
                     ),
                     Image.asset('assets/icons/boy.png', width: 20, height: 20),
+                  ],
+                )),
+                FlatButton(
+                onPressed: () => setState(() {
+                      _voice = 2;
+                    }),
+                color: _voice == 2 ? Colors.blue : Colors.grey,
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "Monster",
+                      style: TextStyle(fontSize: 26),
+                    ),
+                    // Image.asset('assets/icons/boy.png', width: 20, height: 20),
                   ],
                 )),
           ],
