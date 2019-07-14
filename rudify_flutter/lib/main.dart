@@ -23,15 +23,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -177,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future _playWord(say, i) async {
     Duration _duration = new Duration();
     Duration _position = new Duration();
-    List overlap = [.4, .6, .4, 1];
+    List overlap = [1, 1, 1, 1];
     audioCaches[i].play("voice$_voice/" + say[i] + ".mp3");
 
     players[i].durationHandler = (d) => setState(() {
@@ -214,7 +205,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (_voice == 0) {
       await flutterTts.speak(_text);
-      await flutterTts.setVolume(1.0);
     } else {
       audioCaches[0].load("voice$_voice/" + say[0] + '.mp3');
       audioCaches[1].load("voice$_voice/" + say[1] + '.mp3');
